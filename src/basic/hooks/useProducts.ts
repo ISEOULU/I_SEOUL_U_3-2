@@ -14,7 +14,7 @@
 // - removeProductDiscount: 할인 규칙 삭제
 
 import { useCallback, useState } from "react";
-import { AddNotification, ProductWithUI } from "../../types";
+import { ActionResult, ProductWithUI } from "../../types";
 import { initialProducts } from "../constants/constants";
 
 export function useProducts() {
@@ -30,14 +30,14 @@ export function useProducts() {
     return initialProducts;
   });
 
-  const addProduct = useCallback((newProduct: Omit<ProductWithUI, 'id'>, addNotification: AddNotification) => {
+  const addProduct = useCallback((newProduct: Omit<ProductWithUI, 'id'>): ActionResult => {
     const product: ProductWithUI = {
       ...newProduct,
       id: `p${Date.now()}`
     };
     setProducts(prev => [...prev, product]);
-    addNotification('상품이 추가되었습니다.', 'success');
-  }, []); // addNotification 는 App에서 전달받는 함수이므로 의존성 배열에 포함시키지 않음
+    return { success: true, message: '상품이 추가되었습니다.' };
+  }, []);
 
   // const updateProductStock = useCallback((productId: string, newStock: number) => {
     // setProducts(prev =>

@@ -1,5 +1,5 @@
 import { useState, useCallback, useEffect } from 'react';
-import { AddNotification, CouponFormType, Notification, ProductWithUI } from '../types';
+import { ActionResult, AddNotification, CouponFormType, Notification, ProductWithUI } from '../types';
 import Toast from './components/ui/Toast';
 import { calculateCartTotal, calculateItemTotal, getRemainingStock } from './models/cart';
 import { useCart } from './hooks/useCart';
@@ -54,11 +54,15 @@ const App = () => {
   const addNotification : AddNotification = useCallback((message, type= 'success') => {
     const id = Date.now().toString();
     setNotifications(prev => [...prev, { id, message, type }]);
-    
+
     setTimeout(() => {
       setNotifications(prev => prev.filter(n => n.id !== id));
     }, 3000);
   }, []);
+
+  const notify = useCallback((result: ActionResult) => {
+    if (result.message) addNotification(result.message, result.success ? 'success' : 'error');
+  }, [addNotification]);
 
   const [totalItemCount, setTotalItemCount] = useState(0);
   
@@ -111,10 +115,10 @@ const App = () => {
       updateProduct(editingProduct, productForm);
       setEditingProduct(null);
     } else {
-      addProduct({
+      notify(addProduct({
         ...productForm,
         discounts: productForm.discounts
-      }, addNotification);
+      }));
     }
     setProductForm({ name: '', price: 0, stock: 0, description: '', discounts: [] });
     setEditingProduct(null);
@@ -123,7 +127,7 @@ const App = () => {
 
   const handleCouponSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    addCoupon(couponForm, addNotification);
+    notify(addCoupon(couponForm));
     setCouponForm({
       name: '',
       code: '',
@@ -491,7 +495,7 @@ const App = () => {
                           </div>
                         </div>
                         <button
-                          onClick={() => deleteCoupon(coupon.code, addNotification)}
+                          onClick={() => notify(deleteCoupon(coupon.code))}
                           className="text-gray-400 hover:text-red-600 transition-colors"
                         >
                           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -598,7 +602,7 @@ const App = () => {
                           
                           {/* 장바구니 버튼 */}
                           <button
-                            onClick={() => addToCart(product, addNotification)}
+                            onClick={() => notify(addToCart(product))}
                             disabled={remainingStock <= 0}
                             className={`w-full py-2 px-4 rounded-md font-medium transition-colors ${
                               remainingStock <= 0
@@ -657,14 +661,14 @@ const App = () => {
                             <div className="flex items-center justify-between">
                               <div className="flex items-center">
                                 <button 
-                                  onClick={() => updateQuantity(item.product.id, item.quantity - 1, products, addNotification)} 
+                                  onClick={() => notify(updateQuantity(item.product.id, item.quantity - 1, products))}
                                   className="w-6 h-6 rounded border border-gray-300 flex items-center justify-center hover:bg-gray-100"
                                 >
                                   <span className="text-xs">−</span>
                                 </button>
                                 <span className="mx-3 text-sm font-medium w-8 text-center">{item.quantity}</span>
                                 <button 
-                                  onClick={() => updateQuantity(item.product.id, item.quantity + 1, products, addNotification)} 
+                                  onClick={() => notify(updateQuantity(item.product.id, item.quantity + 1, products))}
                                   className="w-6 h-6 rounded border border-gray-300 flex items-center justify-center hover:bg-gray-100"
                                 >
                                   <span className="text-xs">+</span>
@@ -701,7 +705,7 @@ const App = () => {
                           value={selectedCoupon?.code || ''}
                           onChange={(e) => {
                             const coupon = coupons.find(c => c.code === e.target.value);
-                            if (coupon) applyCoupon(coupon, addNotification, cart);
+                            if (coupon) notify(applyCoupon(coupon, cart));
                             else clearSelectedCoupon();
                           }}
                         >
