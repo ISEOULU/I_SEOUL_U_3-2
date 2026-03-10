@@ -23,8 +23,27 @@ export interface Coupon {
   discountValue: number;
 }
 
+export interface CouponFormType {
+  name: string;
+  code: string;
+  discountType: 'amount' | 'percentage';
+  discountValue: number;
+}
+
 export interface Notification {
   id: string;
   message: string;
   type: 'error' | 'success' | 'warning';
+}
+
+export type AddNotification = (message: string, type: Notification['type']) => void;
+
+export interface ActionResult {
+  success: boolean;
+  message: string;
+}
+
+export interface ProductWithUI extends Product {
+  description?: string;
+  isRecommended?: boolean;
 }
