@@ -79,12 +79,11 @@ const App = () => {
       )}
 
       <Header
-        isAdmin={true}
+        isAdmin={isAdmin}
         toggleAdmin={() => setIsAdmin(!isAdmin)}
-        cart={cart}
         totalItemCount={totalItemCount}
         searchTerm={searchTerm}
-        setSearchTerm={setSearchTerm}
+        onSearchTermChange={(value) => setSearchTerm(value)}
       />
 
       {isAdmin ? (
