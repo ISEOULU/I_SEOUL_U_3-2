@@ -35,17 +35,24 @@ export function useCoupons() {
     setLocalStorageItem('coupons', coupons);
   }, [coupons]);
 
-  const addCoupon = useCallback(
-    (newCoupon: Coupon): ActionResult => {
-      const existingCoupon = coupons.find((c) => c.code === newCoupon.code);
+  const addCoupon = useCallback((newCoupon: Coupon): ActionResult => {
+    let hasExistingCoupon = false;
+
+    setCoupons((prev) => {
+      const existingCoupon = prev.find((c) => c.code === newCoupon.code);
       if (existingCoupon) {
-        return { success: false, message: '이미 존재하는 쿠폰 코드입니다.' };
+        hasExistingCoupon = true;
+        return prev;
       }
-      setCoupons((prev) => [...prev, newCoupon]);
-      return { success: true, message: '쿠폰이 추가되었습니다.' };
-    },
-    [coupons],
-  );
+      return [...prev, newCoupon];
+    });
+
+    if (hasExistingCoupon) {
+      return { success: false, message: '이미 존재하는 쿠폰 코드입니다.' };
+    }
+    setCoupons((prev) => [...prev, newCoupon]);
+    return { success: true, message: '쿠폰이 추가되었습니다.' };
+  }, []);
 
   const deleteCoupon = useCallback(
     (couponCode: string): ActionResult => {
@@ -63,7 +70,7 @@ export function useCoupons() {
       const currentTotal = calculateCartTotal(
         cart,
         selectedCoupon,
-      ).totalAfterDiscount;
+      ).totalBeforeDiscount;
 
       if (currentTotal < 10000 && coupon.discountType === 'percentage') {
         return {
