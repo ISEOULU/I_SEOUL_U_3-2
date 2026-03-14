@@ -7,10 +7,10 @@ import {
   ProductActions,
   ProductWithUI,
 } from '../../types';
-import CouponForm from '../components/ui/CouponForm';
+import CouponForm from '../components/ui/coupon/CouponForm';
 import { PlusIcon, TrashIcon } from '../components/icons';
 import { formatWon } from '../utils/formatters';
-import ProductForm from '../components/ui/ProductForm';
+import ProductForm from '../components/ui/product/ProductForm';
 
 interface AdminPageProps {
   products: ProductWithUI[];

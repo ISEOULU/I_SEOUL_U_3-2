@@ -7,8 +7,12 @@ import {
   ProductActions,
 } from '../../types';
 import { CartIcon, XIcon } from '../components/icons';
-import { calculateCartTotal, calculateItemTotal, getRemainingStock } from '../models/cart';
-import ProductCard from '../components/ui/ProductCard';
+import {
+  calculateCartTotal,
+  calculateItemTotal,
+  getRemainingStock,
+} from '../models/cart';
+import ProductCard from '../components/ui/product/ProductCard';
 
 interface CartPageProps {
   products: ProductActions['products'];
