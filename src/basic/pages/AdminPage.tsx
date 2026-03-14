@@ -3,7 +3,7 @@ import {
   ActionResult,
   AddNotification,
   CouponActions,
-  CouponFormType,
+  Coupon,
   ProductActions,
   ProductWithUI,
 } from '../../types';
@@ -41,7 +41,7 @@ function AdminPage({
   const [editingProduct, setEditingProduct] = useState<
     ProductWithUI | {} | null
   >(null);
-  const [editingCoupon, setEditingCoupon] = useState<CouponFormType | {} | null>(null);
+  const [editingCoupon, setEditingCoupon] = useState<Coupon | {} | null>(null);
 
   const deleteProduct = useCallback(
     (productId: string) => {

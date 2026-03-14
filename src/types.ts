@@ -1,6 +1,6 @@
-import { useCart } from "./basic/hooks/useCart";
-import { useCoupons } from "./basic/hooks/useCoupons";
-import { useProducts } from "./basic/hooks/useProducts";
+import { useCart } from './basic/hooks/useCart';
+import { useCoupons } from './basic/hooks/useCoupons';
+import { useProducts } from './basic/hooks/useProducts';
 
 export interface Product {
   id: string;
@@ -27,20 +27,16 @@ export interface Coupon {
   discountValue: number;
 }
 
-export interface CouponFormType {
-  name: string;
-  code: string;
-  discountType: 'amount' | 'percentage';
-  discountValue: number;
-}
-
 export interface Notification {
   id: string;
   message: string;
   type: 'error' | 'success' | 'warning';
 }
 
-export type AddNotification = (message: string, type: Notification['type']) => void;
+export type AddNotification = (
+  message: string,
+  type: Notification['type'],
+) => void;
 
 export interface ActionResult {
   success: boolean;
@@ -52,6 +48,20 @@ export interface ProductWithUI extends Product {
   isRecommended?: boolean;
 }
 
-export type ProductActions = Pick<ReturnType<typeof useProducts>, 'updateProduct' | 'addProduct' | 'setProducts' | 'products'>;
-export type CouponActions = Pick<ReturnType<typeof useCoupons>, 'coupons' | 'addCoupon' | 'deleteCoupon' | 'selectedCoupon' | 'applyCoupon' | 'clearSelectedCoupon'>;
-export type CartActions = Pick<ReturnType<typeof useCart>, 'cart' | 'addToCart' | 'removeFromCart' | 'updateQuantity' | 'clearCart'>;
+export type ProductActions = Pick<
+  ReturnType<typeof useProducts>,
+  'updateProduct' | 'addProduct' | 'setProducts' | 'products'
+>;
+export type CouponActions = Pick<
+  ReturnType<typeof useCoupons>,
+  | 'coupons'
+  | 'addCoupon'
+  | 'deleteCoupon'
+  | 'selectedCoupon'
+  | 'applyCoupon'
+  | 'clearSelectedCoupon'
+>;
+export type CartActions = Pick<
+  ReturnType<typeof useCart>,
+  'cart' | 'addToCart' | 'removeFromCart' | 'updateQuantity' | 'clearCart'
+>;

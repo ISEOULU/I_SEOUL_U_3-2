@@ -5,9 +5,9 @@
 // 1. calculateItemTotal(item): 개별 아이템의 할인 적용 후 총액 계산 // OK
 // 2. getMaxApplicableDiscount(item): 적용 가능한 최대 할인율 계산 // OK
 // 3. calculateCartTotal(cart, coupon): 장바구니 총액 계산 (할인 전/후, 할인액) // OK
-// 4. updateCartItemQuantity(cart, productId, quantity): 수량 변경 // TODO
-// 5. addItemToCart(cart, product): 상품 추가 // TODO
-// 6. removeItemFromCart(cart, productId): 상품 제거 // TODO
+// 4. updateCartItemQuantity(cart, productId, quantity): 수량 변경 // OK
+// 5. addItemToCart(cart, product): 상품 추가 // OK
+// 6. removeItemFromCart(cart, productId): 상품 제거 // OK
 // 7. getRemainingStock(product, cart): 남은 재고 계산 // OK
 //
 // 원칙:
@@ -102,4 +102,37 @@ export const getRemainingStock = (
   const remaining = product.stock - (cartItem?.quantity || 0);
 
   return remaining;
+};
+
+export const addItemToCart = (
+  cart: CartItem[],
+  product: Product,
+): CartItem[] => {
+  const existingItem = cart.find((item) => item.product.id === product.id);
+
+  if (existingItem) {
+    return cart.map((item) =>
+      item.product.id === product.id
+        ? { ...item, quantity: existingItem.quantity + 1 }
+        : item,
+    );
+  }
+  return [...cart, { product, quantity: 1 }];
+};
+
+export const removeItemFromCart = (
+  cart: CartItem[],
+  productId: string,
+): CartItem[] => {
+  return cart.filter((item) => item.product.id !== productId);
+};
+
+export const updateCartItemQuantity = (
+  cart: CartItem[],
+  productId: string,
+  quantity: number,
+): CartItem[] => {
+  return cart.map((item) =>
+    item.product.id === productId ? { ...item, quantity } : item,
+  );
 };

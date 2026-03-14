@@ -3,18 +3,18 @@ import {
   ActionResult,
   AddNotification,
   CouponActions,
-  CouponFormType,
+  Coupon,
 } from '../../../../types';
 
 interface CouponFormProps {
-  editingCoupon: CouponFormType | {};
+  editingCoupon: Coupon | {};
   addCoupon: CouponActions['addCoupon'];
   notify: (result: ActionResult) => void;
   addNotification: AddNotification;
   onClose: () => void;
 }
 
-const initialCouponForm: CouponFormType = {
+const initialCouponForm: Coupon = {
   name: '',
   code: '',
   discountType: 'amount',
@@ -28,7 +28,7 @@ function CouponForm({
   addNotification,
   onClose,
 }: CouponFormProps) {
-  const [couponForm, setCouponForm] = useState<CouponFormType>(initialCouponForm);
+  const [couponForm, setCouponForm] = useState<Coupon>(initialCouponForm);
 
   useEffect(() => {
     // 언마운트 시 폼 초기화
