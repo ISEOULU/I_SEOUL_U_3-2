@@ -1,3 +1,7 @@
+import { useCart } from './basic/hooks/useCart';
+import { useCoupons } from './basic/hooks/useCoupons';
+import { useProducts } from './basic/hooks/useProducts';
+
 export interface Product {
   id: string;
   name: string;
@@ -21,4 +25,25 @@ export interface Coupon {
   code: string;
   discountType: 'amount' | 'percentage';
   discountValue: number;
+}
+
+export interface Notification {
+  id: string;
+  message: string;
+  type: 'error' | 'success' | 'warning';
+}
+
+export type AddNotification = (
+  message: string,
+  type: Notification['type'],
+) => void;
+
+export interface ActionResult {
+  success: boolean;
+  message: string;
+}
+
+export interface ProductWithUI extends Product {
+  description?: string;
+  isRecommended?: boolean;
 }
