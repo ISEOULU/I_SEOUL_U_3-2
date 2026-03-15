@@ -70,7 +70,7 @@ export function useCoupons() {
       const currentTotal = calculateCartTotal(
         cart,
         selectedCoupon,
-      ).totalBeforeDiscount;
+      ).totalAfterDiscount;
 
       if (currentTotal < 10000 && coupon.discountType === 'percentage') {
         return {
